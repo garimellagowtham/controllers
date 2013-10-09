@@ -1,0 +1,20 @@
+<package>
+  <description brief="controllers">
+
+     controllers
+
+  </description>
+  <author>Gowtham</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/controllers</url>
+  <depend package="roscpp"/>
+  <depend package="std_msgs"/>
+  <depend package="geometry_msgs"/>
+  <depend package="tf"/>
+  <depend package="roslib"/>
+	<depend package="ros_vrpn_client"/>
+
+</package>
+
+
