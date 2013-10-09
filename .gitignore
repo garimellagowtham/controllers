@@ -1,0 +1,6 @@
+*.so
+*.bak
+*.o
+bin
+cmake
+build
