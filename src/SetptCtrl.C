@@ -44,7 +44,7 @@ SetptCtrl::SetptCtrl(ros::NodeHandle *n1)
 	marker_pubv = n->advertise<visualization_msgs::Marker>("velocityo", 1);
 	//velocity_pub = n->advertise<geometry_msgs::Vector3>("velfilt", 10);
 	vrpnrpy_pub = n->advertise<geometry_msgs::Vector3>("vrpnrpy",10);
-	ctrlcmd_pub = n->advertise<controllers::ctrl_command>("rpyctrl",10);
+	ctrlcmd_pub = n->advertise<controllers::ctrl_command>("rpytctrl",10);
 	//set velocity marker configuration
 	velmarker.header.frame_id = "/optitrak";
 	velmarker.header.stamp = ros::Time::now();
@@ -276,15 +276,40 @@ void SetptCtrl::Set(const geometry_msgs::TransformStamped::ConstPtr &currframe)
 	//cout<<tcurr<<"\t"<<dxfilt[0]<<"\t"<<dxfilt[1]<<"\t"<<dxfilt[2]<<endl;//roll
 		//usleep(5000);
 }
-void SetptCtrl::setgoal(const Vector3 &v1)
+void SetptCtrl::setgoal(const geometry_msgs::Vector3::ConstPtr &v1)
 {
-	goal_position = v1;//copy constructor
+	goal_position.setX(v1->x); 
+	goal_position.setY(v1->y); 
+	goal_position.setZ(v1->z); 
+	ROS_INFO("New Goal:%f\t%f\t%f",v1->x,v1->y,v1->z);
 	goal_frame.setOrigin(goal_position);
 }
+/*
 void SetptCtrl::setgoal(float xg, float yg, float zg)
 {
 	goal_position.setValue(xg,yg,zg);
 	goal_frame.setOrigin(goal_position);
+}
+*/
+void SetptCtrl::setgains(const controllers::PIDGains::ConstPtr &gainsmsg)
+{
+	if(gainsmsg->id == "ROLL")
+	{
+		kpr = gainsmsg->kp;
+		kdr = gainsmsg->kd;
+		ROS_INFO("ROLL Gains(kpr,kdr):%f\t%f",kpr,kdr);
+	}
+	else if(gainsmsg->id == "THROTTLE")
+	{
+		kpt = gainsmsg->kp;
+		kdt = gainsmsg->kd;
+		Fext.setValue(0.0f,0.0f,-gainsmsg->base);
+		ROS_INFO("THROTTLE Gains(kpt,kdt,cbatt):%f\t%f\t%f",kpt,kdt,Fext);
+	}
+	else
+	{
+		ROS_WARN("Invalide gains msg");
+	}
 }
 
 

@@ -3,5 +3,6 @@
   <node pkg="ros_vrpn_client" type="ros_vrpn_client" name="pelican"
 	  output="screen"/>
 	<remap from =  "/pctrl/pose" to = "/pelican/pose"/>
+	<remap from =  "/pctrl/gains" to = "/gcs/usergains"/>
 	<node pkg="controllers" name="position_ctrl" type="posn_ctrl" />
 </launch>

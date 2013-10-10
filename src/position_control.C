@@ -5,6 +5,8 @@
 using namespace std;
 
 ros::Subscriber currframe_sub;
+ros::Subscriber usergains_sub;
+ros::Subscriber goalpoint_sub;
 
 SetptCtrl *setptctrlinst;//forward declaration of pointer
 
@@ -21,6 +23,8 @@ int main(int argc, char **argv)
 	setptctrlinst->cbatt = 5.0;
 
 	currframe_sub = posnctrl.subscribe("pose",1,&SetptCtrl::Set,setptctrlinst);
+	usergains_sub = posnctrl.subscribe("gains",1,&SetptCtrl::setgains,setptctrlinst);
+	goalpoint_sub = posnctrl.subscribe("goal",1,&SetptCtrl::setgoal,setptctrlinst);
 	ros::spin();
 
 	return 0;

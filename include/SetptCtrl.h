@@ -11,6 +11,7 @@
 #include <geometry_msgs/Vector3.h>
 #include <std_msgs/Float32.h>
 #include "controllers/ctrl_command.h"//for roll pitch, yaw and thrust
+#include "controllers/PIDGains.h"
 //#include <DspFilters/Butterworth.h>
 #include "fstream"
 #include "iostream"
@@ -33,7 +34,7 @@ class SetptCtrl
 		Vector3 rpycommand;
 		Vector3 prev_position;
 		double throtcommand;
-		bool freshdata;
+	bool freshdata;
 		bool criticalvoltage;
 	protected:
 		Vector3 goal_position;
@@ -66,9 +67,10 @@ class SetptCtrl
 		SetptCtrl();
 		SetptCtrl(ros::NodeHandle *n1);
 		void Set(const geometry_msgs::TransformStamped::ConstPtr &currframe);
+		void setgains(const controllers::PIDGains::ConstPtr &gainsmsg);
 		void voltageupdate( const std_msgs::Float32 &currvoltage);
-		void setgoal(const Vector3 &v1);
-		void setgoal(float xg, float yg, float zg);
+		void setgoal(const geometry_msgs::Vector3::ConstPtr &v1);
+		//void setgoal(float xg, float yg, float zg);
 		void applybutter(const Vector3 dx, Vector3 &dxfilt);
 		~SetptCtrl();
 	

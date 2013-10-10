@@ -5,3 +5,6 @@ bin
 cmake
 build
 msg
+msg_gen
+*.h.swp
+*.C.swp
